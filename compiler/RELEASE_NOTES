@@ -1,0 +1,71 @@
+This is the release of Snapdragon LLVM ARM C/C++ compiler toolchain version 19.0.  
+
+The 19.0 release is available for the following platforms:
+
+1. Linux x64 host running Ubuntu 16.04 or later.
+2. Windows x64 host running Windows 10 or later.
+3. Linux ARM64 host running Ubuntu 16.04 or later.
+4. Windows ARM64 host running Windows 10 or later.
+
+The Snapdragon LLVM ARM Compiler will generate code for ARM and X86 targets and
+will not generate code for any of the other targets supported by the llvm.org compiler.
+
+The Snapdragon LLVM ARM 19.0 toolchain includes all changes in the llvm.org 19.1 release branch, 
+and proprietary features and optimizations that are not available in the llvm.org 19.1 branch.
+
+The Snapdragon LLVM ARM Compiler uses the integrated assembler for assembling
+and includes a full featured proprietary linker (QC Linker) for linking.
+
+The following link contains all the new features in the llvm.org 19.1 release
+https://discourse.llvm.org/t/llvm-19-1-0-rc4-released/81039. (SDLLVM 19.0 is based on llvm.org 19.1 branch)
+
+
+The following are the major changes specific to SDLLVM 19.0 compared to SDLLVM 18.0.
+
+1. The deprecated legacy binutils in the tools/bin folder have been removed in 19.0 release. We request all customers
+   to upgrade to LLVM based binutils. Please reach out to SDLLVM support for any help with this.
+
+2. This release supports code generation for Kaanapali V1. To target Kaanapali V1 please pass -mcpu=oryon-2-v1 on the command line.
+
+3. The QCLD linker supports 
+	- Loadable sections to be specified after non loadable sections in the linker script. 
+	- If a loadable section needs to be treated as a metadata section, use the INFO output section type in linker script as below:
+			 
+			output_section (INFO) : { Rule(s) }
+			e.g. : .note.gnu.property (INFO)  : { KEEP (*(.note.gnu.property)) }
+
+The following are the major changes from llvm.org 19.1 version that also impact SDLLVM 19.0.
+
+1. When "-mgeneral-regs-only" option is used, users should only specify soft float ABI option "-mabi=aapcs-soft".
+
+2. Build variant or architecture feature name should not be part of the target triple. For e.g aarch64-pacret-bti-none-elf is not supported and
+   users should use target triple as aarch64-linux-gnu with additional flag -mbranch-protection. Due to this change, users should explicitly specify the build variant of MUSL LibC and compiler-rt/builtins to link with.
+
+3. The llvm.org feature -experimental-debuginfo-iterators is disabled in SDLLVM due to stability issues in the feature. 
+   We are working with llvm maintainers to address this.
+ 
+ 
+Note : On Windows host please run the below commands to recreate tools/bin folder and point it to /bin.
+1. Open the command prompt in administrator mode.
+2. cd to the toolchain's parent directory and run the following commands.  
+   - mkdir tools
+   - cd tools
+   - mklink /D bin ..\bin
+
+Documentation
+
+The SDLLVM 19.0 user guides are available from Agile here:
+
+Snapdragon LLVM ARM Compiler User Guide: http://agiledocument.qualcomm.com/AgileDocument/spring/authorize?itemno=80-VB419-96
+
+Snapdragon LLVM ARM Linker User Guide: http://agiledocument.qualcomm.com/AgileDocument/spring/authorize?itemno=80-VB419-102
+
+Snapdragon LLVM ARM Utilities User Guide: http://agiledocument.qualcomm.com/AgileDocument/spring/authorize?itemno=80-VB419-103
+
+Contacts & Bug Reporting
+sdllvm.support@qualcomm.com
+
+Use and Distribution:
+This release is for internal use. External version of this release will be made 
+available through the proper distribution channels.
+

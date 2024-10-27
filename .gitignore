@@ -1,0 +1,3 @@
+compiler/bin/clang-19
+compiler/bin/clang-repl
+compiler/bin/flang-new
